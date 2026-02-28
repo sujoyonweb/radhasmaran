@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>RadhaSmaran</title>
+
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RadhaSmaran">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+
+    <div id="appContainer" class="app-container">
+
+        <header id="appHeader" class="app-header">
+            <div class="pill-toggle" id="headerPillToggle">
+                <div class="pill-slider"></div>
+                <button id="btnToggleNaam" class="pill-btn active">Naam</button>
+                <button id="btnToggleMantra" class="pill-btn">Mantra</button>
+            </div>
+
+            <div class="header-actions" style="display: flex; gap: 8px;">
+                <button id="btnOpenLikhita" class="icon-btn" style="transition: opacity 0.3s ease, transform 0.2s;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                        <line x1="16" y1="8" x2="2" y2="22"></line>
+                        <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                    </svg>
+                </button>
+                <button id="btnEnterImmersive" class="icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+                <button id="btnOpenMenu" class="icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="19" cy="12" r="1"></circle>
+                        <circle cx="5" cy="12" r="1"></circle>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <button id="btnExitImmersive" class="icon-btn floating-exit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+            </svg>
+        </button>
+
+        <main id="viewCounter" class="view-counter tap-zone">
+            <canvas id="likhitaCanvas" class="likhita-canvas"></canvas>
+            
+            <div class="calligraphy-header">
+                <h1 id="textCalligraphy" class="calligraphy-text">राधावल्लभ श्रीहरिवंश</h1>
+            </div>
+
+            <div class="progress-container">
+                <svg class="progress-ring" viewBox="0 0 250 250">
+                    <circle class="ring-track" cx="125" cy="125" r="115"></circle>
+                    <circle id="ringFill" class="ring-fill" cx="125" cy="125" r="115"></circle>
+                </svg>
+
+                <div class="counter-internal">
+                    <span id="textTotalCount" class="text-massive">0</span>
+                    <div class="mala-progress-group">
+                        <span id="textCurrentMala" class="text-medium">0</span>
+                        <span class="text-dim">/ 108</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bottom-stats-bar">
+            <div class="stat-block" id="btnStatsShortcut">
+                <span id="textMalaToday" class="stat-value">0</span>
+                <span class="stat-label">Malas Today</span>
+            </div>
+
+            <div class="stat-divider"></div>
+
+            <div class="stat-block align-right">
+                <div class="stat-target-group">
+                    <span id="textDailyTotal" class="stat-value">0</span>
+                    <span class="text-dim"> / <span id="textDailyTarget">1080</span></span>
+                </div>
+                <span class="stat-label">Daily Target</span>
+            </div>
+        </footer>
+
+
+        <div class="modal-overlay" id="insightsOverlay"></div>
+        <div class="action-menu-sheet full-height" id="insightsSheet">
+
+            <div class="stats-header">
+                <div class="stats-top-bar">
+                    <h2 class="modal-title">Insights</h2>
+                    <button class="icon-btn-close" id="btnHideInsights">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="pill-wrapper">
+                    <div class="pill-toggle" id="insightsPillToggle">
+                        <div class="pill-slider"></div>
+                        <button class="pill-btn active" id="btnStatNaam">Naam</button>
+                        <button class="pill-btn" id="btnStatMantra">Mantra</button>
+                    </div>
+                </div>
+
+                <div class="text-toggle-group">
+                    <button class="text-toggle-btn active" id="btnMetricMalas">Malas</button>
+                    <span class="toggle-dot">•</span>
+                    <button class="text-toggle-btn" id="btnMetricCount">Count</button>
+                </div>
+            </div>
+
+            <div class="scroll-container">
+
+                <div class="content-section" style="margin-bottom: 32px;">
+                    <div class="card">
+                        <div class="section-header-row" style="margin-bottom: 8px;">
+                            <h3 class="text-overline section-title" style="margin: 0; color: var(--accent-primary);">Maha Sankalpa</h3>
+                            <span class="section-meta" id="textSankalpaPercent" style="color: var(--accent-primary); font-weight: 600;">0.000%</span>
+                        </div>
+                        <div style="margin-bottom: 16px; display: flex; align-items: baseline; gap: 6px;">
+                            <span id="textSankalpaCurrent" class="text-display" style="font-size: 24px;">0</span>
+                            <span class="text-dim">/ <span id="textSankalpaTargetDisplay">10,000,000</span></span>
+                        </div>
+                        <div class="h-track" style="height: 8px; background-color: rgba(39, 174, 96, 0.1);">
+                            <div id="fillSankalpa" class="h-fill" style="width: 0%; box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section" style="margin-bottom: 32px;">
+                    <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+                        <span style="font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Lifetime Likhita</span>
+                        <span id="statLikhitaTotal" style="font-family: var(--font-mono); font-size: 20px; font-weight: 600; color: var(--accent-primary);">0</span>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="text-overline section-title">Lifetime</h3>
+                    <div class="grid-2">
+                        <div class="card flex-col-center">
+                            <span class="text-display text-green" id="textStatsTotalMalas">0</span>
+                            <span class="text-overline">Total Malas</span>
+                        </div>
+                        <div class="card flex-col-center">
+                            <span class="text-display" id="textStatsTotalCount">0</span>
+                            <span class="text-overline">Total Count</span>
+                        </div>
+                        <div class="card flex-col-center">
+                            <span class="text-display" id="textStatsCurrentStreak">0 <span
+                                    class="emoji-icon">🔥</span></span>
+                            <span class="text-overline">Current Streak</span>
+                        </div>
+                        <div class="card flex-col-center">
+                            <span class="text-display" id="textStatsBestStreak">0</span>
+                            <span class="text-overline">Best Streak</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header-row">
+                        <h3 class="text-overline section-title" style="margin: 0;">Last 7 Days</h3>
+                        <span class="section-meta" id="textWeekTotal">0 Malas</span>
+                    </div>
+                    <div class="vertical-chart" id="chartWeekly">
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h3 class="text-overline section-title">Past Year Distribution</h3>
+                    <div class="horizontal-list" id="listMonthly">
+                    </div>
+                </div>
+
+                <div class="content-section" style="margin-bottom: 40px;">
+                    <h3 class="text-overline section-title">Yearly Distribution</h3>
+                    <div class="horizontal-list" id="listYearly">
+                    </div>
+                </div>
+
+                <div class="content-section" style="margin-bottom: 60px;">
+                    <h3 class="text-overline section-title">Daily Logbook (Last 30 Active Days)</h3>
+                    <div class="horizontal-list" id="listDailyLog">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="settingsOverlay"></div>
+        <div class="action-menu-sheet full-height" id="settingsSheet">
+
+            <div class="stats-header" style="border-bottom: 1px solid var(--border-input); padding-bottom: 16px;">
+                <div class="stats-top-bar" style="margin-bottom: 0;">
+                    <h2 class="modal-title">Settings</h2>
+                    <button class="icon-btn-close" id="btnHideSettings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="scroll-container settings-content">
+
+                <div class="settings-section">
+                    <label class="settings-label">Data Backup</label>
+                    <div class="sync-dropzone" id="syncDropzone">
+                        <button id="btnExportData" class="sync-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Export Backup Data
+                        </button>
+                        <div class="sync-divider"></div>
+                        <button id="btnImportData" class="sync-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Restore from Backup
+                        </button>
+                        <input type="file" id="fileImport" accept=".json" style="display: none;">
+                        <span class="sync-hint">backup your data to never loose it</span>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-group">
+                        <button id="btnShowInsights" class="settings-row" style="width: 100%; text-align: left;">
+                            <div class="row-left">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="18" y="3" width="4" height="18"></rect>
+                                    <rect x="10" y="8" width="4" height="13"></rect>
+                                    <rect x="2" y="13" width="4" height="8"></rect>
+                                </svg>
+                                <span>Insights & History</span>
+                            </div>
+                            <svg class="chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-group">
+                        <button id="btnOpenOfflineLog" class="settings-row" style="width: 100%; text-align: left;">
+                            <div class="row-left">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 5v14M5 12h14"></path>
+                                </svg>
+                                <span>Log Offline Chanting</span>
+                            </div>
+                            <svg class="chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="settings-section">
+                    <label class="settings-label">Preferences</label>
+                    <div class="settings-group">
+                        <div class="settings-row" id="rowToggleSound">
+                            <span>Sound Effects</span>
+                            <div class="toggle-switch active" id="toggleSoundUI">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        <div class="settings-row" id="rowToggleHapticsTap">
+                            <span>Tap Haptics</span>
+                            <div class="toggle-switch active" id="toggleHapticsTapUI">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        <div class="settings-row" id="rowToggleHapticsMala">
+                            <span>Mala Completion Haptics</span>
+                            <div class="toggle-switch active" id="toggleHapticsMalaUI">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        <div class="settings-row" id="rowToggleAwake">
+                            <span>Keep Screen Awake</span>
+                            <div class="toggle-switch active" id="toggleAwakeUI">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">Display Text (Calligraphy)</label>
+                    <div class="settings-group" style="padding: 16px; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <div>
+                            <span class="text-dim" style="font-size: 13px; margin-bottom: 12px; display: block;">Naam Mode</span>
+                            <div class="preset-chip-group" id="chipsNaam">
+                                <button class="preset-chip">राधा</button>
+                                <button class="preset-chip">राम</button>
+                                <button class="preset-chip">कृष्ण</button>
+                                <button class="preset-chip">शिव</button>
+                            </div>
+                            <input type="text" id="inputCustomNaam" class="settings-input" style="width: 100%; text-align: left; font-family: var(--font-calligraphy);" placeholder="Custom Naam...">
+                        </div>
+
+                        <div class="sync-divider" style="width: 100%;"></div>
+
+                        <div>
+                            <span class="text-dim" style="font-size: 13px; margin-bottom: 12px; display: block;">Mantra Mode</span>
+                            <div class="preset-chip-group" id="chipsMantra">
+                                <button class="preset-chip">राधावल्लभ श्रीहरिवंश</button>
+                                <button class="preset-chip" data-value="हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे, हरे राम हरे राम राम राम हरे हरे">हरे कृष्ण महामंत्र</button>
+                                <button class="preset-chip">ॐ नमः शिवाय</button>
+                                <button class="preset-chip">ॐ नमो भगवते वासुदेवाय</button>
+                            </div>
+                            <input type="text" id="inputCustomMantra" class="settings-input" style="width: 100%; text-align: left; font-family: var(--font-calligraphy);" placeholder="Custom Mantra...">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">Daily Goals</label>
+                    <div class="settings-group">
+                        <div class="settings-row input-row">
+                            <span class="text-dim">Naam Target</span>
+                            <input type="number" id="inputNaamTarget" class="settings-input" min="1">
+                        </div>
+                        <div class="settings-row input-row">
+                            <span class="text-dim">Mantra Target</span>
+                            <input type="number" id="inputMantraTarget" class="settings-input" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">Lifetime Sankalpa</label>
+                    <div class="settings-group">
+                        <div class="settings-row input-row">
+                            <span class="text-dim">Naam Goal</span>
+                            <input type="number" id="inputNaamSankalpa" class="settings-input" min="1" style="width: 120px;">
+                        </div>
+                        <div class="settings-row input-row">
+                            <span class="text-dim">Mantra Goal</span>
+                            <input type="number" id="inputMantraSankalpa" class="settings-input" min="1" style="width: 120px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <label class="settings-label">About</label>
+                    <div class="settings-group">
+                        <a href="https://sujoyonweb.github.io/about-radhasmaran" target="_blank" class="settings-row">
+                            <div class="row-left">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                                </svg>
+                                <span>Read Manual</span>
+                            </div>
+                            <svg class="chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                        <a href="https://sujoyonweb.github.io" target="_blank" class="settings-row">
+                            <div class="row-left">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                                <span>Developer</span>
+                            </div>
+                            <svg class="chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                        <div class="settings-row version-row">
+                            <span>Version</span>
+                            <span class="version-text">v1.0.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stealth-zone">
+                    <button id="btnTriggerReset" class="stealth-danger-btn">FACTORY RESET</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="resetOverlay">
+            <div class="alert-modal-surface">
+                <div class="alert-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                        </path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <h3 class="alert-title">Factory Reset</h3>
+                <p class="alert-desc">This will permanently delete all counting history and settings. This cannot be
+                    undone.</p>
+                <div class="alert-actions">
+                    <button id="btnCancelReset" class="alert-btn cancel">Cancel</button>
+                    <button id="btnConfirmReset" class="alert-btn danger">Wipe Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="offlineLogOverlay">
+            <div class="alert-modal-surface">
+                <h3 class="alert-title" style="margin-bottom: 16px;">Log Offline Japa</h3>
+
+                <div class="pill-toggle" id="offlinePillToggle" style="margin-bottom: 20px; width: 100%;">
+                    <div class="pill-slider"></div>
+                    <button class="pill-btn active" id="btnOfflineNaam" style="flex: 1;">Naam</button>
+                    <button class="pill-btn" id="btnOfflineMantra" style="flex: 1;">Mantra</button>
+                </div>
+
+                <div class="settings-row input-row"
+                    style="width: 100%; margin-bottom: 24px; border: 1px solid var(--border-input); border-radius: 8px;">
+                    <span class="text-dim">Completed Malas</span>
+                    <input type="number" id="inputOfflineMalas" class="settings-input" placeholder="0" min="1"
+                        style="width: 80px;">
+                </div>
+
+                <div class="alert-actions">
+                    <button id="btnCancelOffline" class="alert-btn cancel">Cancel</button>
+                    <button id="btnSaveOffline" class="alert-btn"
+                        style="background-color: var(--accent-primary); color: #fff;">Add to Total</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script type="module" src="js/app.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('[Service Worker] Registered', reg.scope))
+                    .catch(err => console.error('[Service Worker] Registration failed:', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+{
+  "id": "/?source=pwa",
+  "name": "RadhaSmaran",
+  "short_name": "RadhaSmaran",
+  "description": "A minimalist, offline-first digital sanctuary for Japa counting and Likhita meditation.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "categories": ["lifestyle", "productivity", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr",
+  
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Minimalist Japa Tracker"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Immersive Likhita Canvas"
+    }
+  ],
+
+  "shortcuts": [
+    {
+      "name": "Open Likhita Canvas",
+      "short_name": "Write Naam",
+      "description": "Quickly open the Likhita writing space",
+      "url": "./index.html",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

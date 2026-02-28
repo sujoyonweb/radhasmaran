@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+        <filter id="subtle-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+            <feComponentTransfer in="blur" result="dimmed-blur">
+                <feFuncA type="linear" slope="0.6"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode in="dimmed-blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        
+        <linearGradient id="sage-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2ED573" />
+            <stop offset="100%" stop-color="#27AE60" />
+        </linearGradient>
+
+        <radialGradient id="bg-grad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#18181B" /> <stop offset="100%" stop-color="#000000" /> </radialGradient>
+    </defs>
+
+    <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+
+    <circle cx="256" cy="256" r="180" fill="none" stroke="#18181B" stroke-width="28" />
+
+    <path d="M 256 76 A 180 180 0 1 1 76 256" fill="none" stroke="url(#sage-grad)" stroke-width="28" stroke-linecap="round" filter="url(#subtle-glow)" />
+
+    <g transform="translate(0, 10)">
+        <path d="M 256 140 C 256 140 200 250 256 320 C 312 250 256 140 256 140 Z" fill="none" stroke="url(#sage-grad)" stroke-width="20" stroke-linejoin="round" filter="url(#subtle-glow)" />
+        
+        <path d="M 256 320 C 180 320 130 240 160 190 C 190 250 220 280 256 320 Z" fill="none" stroke="url(#sage-grad)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#subtle-glow)" />
+        
+        <path d="M 256 320 C 332 320 382 240 352 190 C 322 250 292 280 256 320 Z" fill="none" stroke="url(#sage-grad)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#subtle-glow)" />
+    </g>
+</svg>
