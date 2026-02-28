@@ -13,7 +13,7 @@
 
 > *RadhaSmaran is not just a tracker; it is a serene, distraction-free environment built to honor the practice of Naam Japa. No ads, no tracking, no cloud lock-in. Just you and the Divine Name.*
 
-[**Live Demo**](sujoyonweb.github.io/radhasmaran) • [**Report a Bug**](https://github.com/sujoyonweb/radhasmaran/issues) • [**Request Feature**](https://github.com/yourusername/radhasmaran/issues)
+[**Live Demo**](sujoyonweb.github.io/radhasmaran) • [**Report a Bug**](https://github.com/sujoyonweb/radhasmaran/issues) • [**Request Feature**](https://github.com/sujoyonweb/radhasmaran/issues)
 
 </div>
 
@@ -21,7 +21,6 @@
 
 ## 📱 The Experience
 
-*(Note: Replace these placeholder links with actual screenshots of your app!)*
 <p align="center">
   <img src="assets/img/screenshot-mobile.png" width="30%" alt="Mobile UI">
   &nbsp; &nbsp; &nbsp; &nbsp;
@@ -103,4 +102,5 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 <br>
 <div align="center">
   <i>Built with devotion and Vanilla JS.</i>
+
 </div>
