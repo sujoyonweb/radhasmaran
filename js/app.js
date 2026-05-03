@@ -349,21 +349,27 @@ function setupEventListeners() {
     ui.likhitaCanvas.addEventListener('mouseleave', stopDrawing); 
     
     function commitLikhitaCount() {
+        // 1. Start the visual fade immediately
         ui.likhitaCanvas.style.transition = 'opacity 0.6s ease-out';
         ui.likhitaCanvas.style.opacity = '0';
 
-        state.likhitaTotal = (state.likhitaTotal || 0) + 1;
-        saveState(state);
-        updateScreen(); 
-
-        if (window.navigator.vibrate && prefs.hapticsTap) {
-            window.navigator.vibrate(10); 
-        }
-
-        // THE FIX: Assign this to wipeTimeout so we can cancel it if they start drawing
+        // 2. Put the COUNT and the WIPE inside the final killable timer
         wipeTimeout = setTimeout(() => {
+            
+            // Only give them the point once the ink has fully disappeared
+            state.likhitaTotal = (state.likhitaTotal || 0) + 1;
+            saveState(state);
+            updateScreen(); 
+
+            // Trigger the haptic tick
+            if (window.navigator.vibrate && prefs.hapticsTap) {
+                window.navigator.vibrate(10); 
+            }
+
+            // Wipe the invisible canvas clean
             ui.ctx.clearRect(0, 0, ui.likhitaCanvas.width, ui.likhitaCanvas.height);
-        }, 600);
+            
+        }, 600); // Wait 600ms for the fade to finish before doing the math
     }
 
     // THE VERTICAL ROLL SEQUENCER (Tab switching animation)
@@ -394,10 +400,20 @@ function setupEventListeners() {
     // OFFLINE DATA INJECTION
     window.addEventListener('injectOfflineData', (e) => {
         const { mode, count } = e.detail; 
-        const totalCounts = count * 108; 
+        // 'count' is now the raw number the user typed in (e.g., 150)
         
-        state.data[mode].malas += count;
-        state.data[mode].total += totalCounts;
+        const currentData = state.data[mode];
+        
+        // 1. Add the raw number to your total and current circle progress
+        currentData.total += count;
+        currentData.current += count;
+        
+        // 2. Automatically convert into Malas if it crosses 108
+        const additionalMalas = Math.floor(currentData.current / 108);
+        currentData.malas += additionalMalas;
+        
+        // 3. Keep the remainder for the glowing circle (e.g., 150 % 108 = 42)
+        currentData.current = currentData.current % 108; 
         
         saveState(state);
         updateScreen();

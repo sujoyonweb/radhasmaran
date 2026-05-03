@@ -1,9 +1,9 @@
 // RadhaSmaran Dual-Tier PWA Engine v1.0.0
 
 // APP_CACHE updates frequently (HTML, CSS, JS)
-const APP_CACHE = 'radhasmaran-app-v1.0.0'; 
+const APP_CACHE = 'radhasmaran-app-v1.0.1'; 
 // CORE_CACHE updates rarely (Fonts, Icons, Audio, Images)
-const CORE_CACHE = 'radhasmaran-core-v1.0.0';   
+const CORE_CACHE = 'radhasmaran-core-v1.0.1';   
 
 // Lightweight files that power the app logic
 const APP_FILES = [

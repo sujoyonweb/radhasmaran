@@ -867,12 +867,13 @@
 
 /* --- LIKHITA JAPA (WRITING MODE) --- */
 .likhita-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5; /* Sits above the glowing ring */
-    pointer-events: none; /* Let taps pass through to the counter initially */
+    position: fixed; /* THE FIX: This allows the canvas to escape the middle box and cover the whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 5; 
+    pointer-events: none; 
     opacity: 0;
     transition: opacity 0.4s ease;
 }
@@ -884,23 +885,37 @@ body.is-likhita .likhita-canvas {
 }
 
 body.is-likhita .progress-container {
-    opacity: 0; /* Fade out the glowing ring */
+    opacity: 0; 
     pointer-events: none;
     transition: opacity 0.4s ease;
 }
 
 body.is-likhita #headerPillToggle {
-    opacity: 0.3; /* Dim the top tabs so focus is purely on the slate */
+    opacity: 0.3; 
     pointer-events: none;
 }
+
+/* --- THE GHOST STRATEGY (Fixing the Dead Zones) --- */
+body.is-likhita .app-header {
+    pointer-events: none; /* Let touches pass right through the header */
+}
+body.is-likhita .header-actions {
+    pointer-events: auto; /* Keeps the top-right buttons clickable so you can exit! */
+}
+body.is-likhita #btnStatsShortcut {
+    pointer-events: none; /* Disables the bottom-left text from blocking ink */
+}
+
 /* Smoothly slide the text up to create writing space */
 .calligraphy-header {
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10;
+    pointer-events: none; 
 }
 
 body.is-likhita .calligraphy-header {
-    transform: translateY(-12vh); /* Slides the text up gracefully */
+    /* THE FIX: A safer value. This tucks it cleanly right under the header without pushing it off the screen! */
+    transform: translateY(-24vh); 
 }
 
 /* ======================================================= */
